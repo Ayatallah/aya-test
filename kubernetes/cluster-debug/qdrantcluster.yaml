@@ -1,0 +1,14 @@
+apiVersion: qdrant.io/v1
+kind: QdrantCluster
+metadata:
+  name: qdrant-chaos-testing
+  namespace: chaos-testing
+spec:
+  id: chaos-testing
+  version: dev
+  size: 3
+  distributed: true
+  resources:
+    cpu: "0.5"
+    memory: "2Gi"
+    storage: "24Gi"
