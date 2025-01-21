@@ -17,19 +17,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: get changed files
-        id: getfile
-        run: |
-          echo "::set-output name=files::$(git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | xargs)"
-
-      - name: echo output
-        run: |
-          echo ${{ steps.getfile.outputs.files }}
-
       - name: Check for changes in cluster
         id: cluster_check
         run: |
-          if git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -q '^kubernetes/cluster/qdrantcluster.yaml$'; then
+          if git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep -q '^kubernetes/cluster/qdrantcluster.yaml$'; then
             echo "cluster_changed=true" >> $GITHUB_ENV
           else
             echo "cluster_changed=false" >> $GITHUB_ENV
@@ -38,7 +29,7 @@ jobs:
       - name: Check for changes in cluster debug
         id: cluster_debug_check
         run: |
-          if git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -q '^kubernetes/cluster-debug/qdrantcluster.yaml$'; then
+          if git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep -q '^kubernetes/cluster-debug/qdrantcluster.yaml$'; then
             echo "cluster_debug_changed=true" >> $GITHUB_ENV
           else
             echo "cluster_debug_changed=false" >> $GITHUB_ENV
@@ -47,7 +38,7 @@ jobs:
       - name: Check for changes in cluster three
         id: cluster_three_check
         run: |
-          if git diff-tree --no-commit-id --name-only -r ${{ github.sha }} | grep -q '^kubernetes/cluster-three/qdrantcluster.yaml$'; then
+          if git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | grep -q '^kubernetes/cluster-three/qdrantcluster.yaml$'; then
             echo "cluster_three_changed=true" >> $GITHUB_ENV
           else
             echo "cluster_three_changed=false" >> $GITHUB_ENV
