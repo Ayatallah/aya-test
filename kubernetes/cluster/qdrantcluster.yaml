@@ -7,7 +7,7 @@ spec:
   id: chaos-testing
   version: dev
   size: 3
-  distributed: false
+  distributed: true
   resources:
     cpu: "0.5"
     memory: "2Gi"
